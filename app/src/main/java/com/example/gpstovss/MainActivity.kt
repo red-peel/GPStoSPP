@@ -11,6 +11,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Build
 import android.widget.Button
 import android.widget.ScrollView
 import android.widget.TextView
@@ -19,6 +20,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.gpstovss.speed.GpsSpeedProvider
@@ -106,6 +108,7 @@ class MainActivity : AppCompatActivity() {
 
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+        window.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(bars.left, bars.top, bars.right, bars.bottom)
@@ -166,11 +169,15 @@ class MainActivity : AppCompatActivity() {
 
     /* ========= Permissions ========= */
     private fun requestPermissions() {
-        val perms = arrayOf(
+        val perms = mutableListOf(
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.BLUETOOTH_CONNECT
         )
+
+        if (Build.VERSION.SDK_INT >= 33) {
+            perms.add(Manifest.permission.POST_NOTIFICATIONS)
+        }
 
         val missing = perms.any { perm ->
             ActivityCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED
@@ -179,13 +186,14 @@ class MainActivity : AppCompatActivity() {
         if (missing) {
             setPortStatus("REQUESTING PERMS…")
             log("PORT", "Requesting permissions")
-            permissionLauncher.launch(perms)
+            permissionLauncher.launch(perms.toTypedArray())
         } else {
             setPortStatus("OK")
             speedProvider.start()
             refreshConnectedDevices()
         }
     }
+
 
     /* ========= UI tick (display + TX) ========= */
     private fun startUiTick() {
@@ -315,6 +323,10 @@ class MainActivity : AppCompatActivity() {
                 isPortOpening = false
 
                 runOnUiThread {
+                    ContextCompat.startForegroundService(
+                        this,
+                        Intent(this, com.example.gpstovss.service.VssForegroundService::class.java)
+                    )
                     setPortStatus("OPEN")
                     log("PORT", "OPEN")
                     refreshButtons()
@@ -344,6 +356,10 @@ class MainActivity : AppCompatActivity() {
         out = null
         isPortOpen = false
         isPortOpening = false
+
+        stopService(
+            Intent(this, com.example.gpstovss.service.VssForegroundService::class.java)
+        )
 
         setPortStatus("CLOSED")
         log("PORT", "CLOSED")
@@ -400,6 +416,9 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         speedProvider.stop()
+        stopService(
+            Intent(this, com.example.gpstovss.service.VssForegroundService::class.java)
+        )
         closePortSilently()
     }
 }

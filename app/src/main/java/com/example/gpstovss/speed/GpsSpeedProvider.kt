@@ -31,7 +31,7 @@ class GpsSpeedProvider(
                 val loc = result.lastLocation ?: return
                 lastMps = loc.speed.coerceAtLeast(0f)
                 // Optional debug hook
-                onDebug("gps_mps=%.2f hasBearing=%s".format(lastMps, loc.hasBearing()))
+                ///onDebug("gps_mps=%.2f hasBearing=%s".format(lastMps, loc.hasBearing()))
             }
         }
 
