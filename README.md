@@ -130,13 +130,6 @@ It exists specifically to:
 - Enable testing and development without drivetrain sensors
 
 
-
-## 📄 License
-
-MIT
-
-
-
 ## 🧠 Notes
 
 - Background GPS update rates may be throttled by Android
