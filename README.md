@@ -93,7 +93,7 @@ Perfect for real‑time telemetry.
 ## 🔌 Runtime Behavior
 
 1. App starts GPS tracking.
-2. App scans and connects to the ESP32 over Bluetooth SPP.
+2. App scans and connects to a bluetooth device with an open serial port over Bluetooth SPP.
 3. Speed data is sent continuously as plain text.
 4. ESP32 parses speed and generates the VSS‑equivalent signal.
 
@@ -125,7 +125,7 @@ Key logic lives under:
 This project is **not** a generic GPS logger.
 
 It exists specifically to:
-- Feed real‑time speed data to an ESP32
+- Feed real‑time speed data to a bluetooth device's open serial port via SPP.
 - Support automotive signal emulation
 - Enable testing and development without drivetrain sensors
 
