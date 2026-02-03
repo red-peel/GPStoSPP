@@ -7,7 +7,7 @@ This repository represents the **Android / phone-side** of a larger system desig
 > Think of this as the *sensor and data source*.  
 > The ESP32 project is the *translator and hardware interface*.
 
----
+
 
 ## 🔗 Related Project (ESP32)
 
@@ -31,7 +31,7 @@ ECU / Speedometer / VSS Line
 The phone provides accurate, filtered GPS speed.  
 The ESP32 converts that speed into a physical signal usable by automotive hardware.
 
----
+
 
 ## 🧠 What This App Does
 
@@ -45,7 +45,7 @@ This allows:
 - Faster iteration and tuning
 - Easy validation using phone tools
 
----
+
 
 ## 📡 Why Bluetooth SPP?
 
@@ -61,7 +61,7 @@ On ESP32, it appears as a serial RX buffer.
 
 Perfect for real‑time telemetry.
 
----
+
 
 ## 🛠️ Build & Run
 
@@ -88,7 +88,7 @@ Perfect for real‑time telemetry.
 
 > ⚠️ GPS speed accuracy depends on movement and satellite lock.
 
----
+
 
 ## 🔌 Runtime Behavior
 
@@ -99,7 +99,7 @@ Perfect for real‑time telemetry.
 
 Opening the app foreground improves GPS update rate and accuracy.
 
----
+
 
 ## 📂 Project Structure
 
@@ -118,7 +118,7 @@ Key logic lives under:
 - `speed/` → GPS speed acquisition
 - `bluetooth/` → SPP socket handling
 
----
+
 
 ## 🧩 Intended Use Case
 
@@ -129,13 +129,13 @@ It exists specifically to:
 - Support automotive signal emulation
 - Enable testing and development without drivetrain sensors
 
----
+
 
 ## 📄 License
 
 MIT
 
----
+
 
 ## 🧠 Notes
 
@@ -143,6 +143,6 @@ MIT
 - Foreground execution provides the best speed accuracy
 - Designed for pairing with **SPPtoVSS**, not BLE
 
----
+
 
 If you know why you need this app, you are the target audience.
